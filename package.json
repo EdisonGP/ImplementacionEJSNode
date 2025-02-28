@@ -15,7 +15,10 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "mongodb": "^6.13.1",
+=======
+>>>>>>> 19be7979f43acdcbb630e6f62fa31920ec6c93ee
     "mongoose": "^5.12.5"
   },
   "devDependencies": {
