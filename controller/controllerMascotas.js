@@ -1,8 +1,5 @@
 const Mascota = require('../models/mascota');
-<<<<<<< HEAD
 const Premio = require('../models/premio');
-=======
->>>>>>> 19be7979f43acdcbb630e6f62fa31920ec6c93ee
 
 const goHome= async (req, res) => { //INICIO
     res.render("index", { titulo: "inicio EJS", texto: "NODE" });
@@ -27,10 +24,6 @@ const goHome= async (req, res) => { //INICIO
 const getMascotaMongoDB= async (req, res) => { //MASCOTAS DESDE MONGO DB
     try {
         const arrayMascotasDB = await Mascota.find();
-<<<<<<< HEAD
-=======
-       // console.log(arrayMascotasDB);
->>>>>>> 19be7979f43acdcbb630e6f62fa31920ec6c93ee
         res.render("mascotas-MongoDB", {
           arrayMascotas: arrayMascotasDB
         })
@@ -77,10 +70,6 @@ const DeleteMascota= async (req, res) => { //ELIMINACION DE MASCOTAS
   
     try {
         const mascotaDB = await Mascota.findByIdAndDelete({ _id: id });
-<<<<<<< HEAD
-=======
-        console.log(mascotaDB)
->>>>>>> 19be7979f43acdcbb630e6f62fa31920ec6c93ee
   
         if (!mascotaDB) {
             res.json({
@@ -120,7 +109,6 @@ const UpdateMascota= async (req, res) => { //ACTUALIZACION DE MASCOTAS
     }
 }
 
-<<<<<<< HEAD
 // ====== PREMIOS ==========
 const createPremio= async (req, res) => { //CREACION DE PREMIO
     const body = req.body
@@ -145,8 +133,7 @@ const getPremiosByMascota = async (req, res) => { //OBTENCION DE PREMIOS
         res.status(500).send("Error al obtener los premios");
     }
 };
-=======
->>>>>>> 19be7979f43acdcbb630e6f62fa31920ec6c93ee
+
 
 
 module.exports = {
@@ -159,11 +146,7 @@ module.exports = {
     goHome,
     goNosotros,
     goCreateMascota,
-<<<<<<< HEAD
     goUpdateMascota,
     createPremio,
     getPremiosByMascota
-=======
-    goUpdateMascota
->>>>>>> 19be7979f43acdcbb630e6f62fa31920ec6c93ee
 }
