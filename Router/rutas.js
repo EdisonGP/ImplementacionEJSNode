@@ -26,7 +26,7 @@ router.post("/create-mascota", MascotaCreate);
 router.get('/Mascotas/actualizar/:id', UpdateShowMascota);
 router.delete("/Mascotas/eliminar/:id", DeleteMascota);
 router.put("/Mascotas/actualizar/:id", UpdateMascota);
-router.post("/premio", createPremio);
+router.post("/create-premio", createPremio);
 router.get('/premios/:id', getPremiosByMascota);
 
 module.exports = router;

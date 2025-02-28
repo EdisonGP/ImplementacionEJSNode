@@ -1,4 +1,5 @@
 const Mascota = require('../models/mascota');
+const Premio = require('../models/premio');
 
 const goHome= async (req, res) => { //INICIO
     res.render("index", { titulo: "inicio EJS", texto: "NODE" });
@@ -23,7 +24,6 @@ const goHome= async (req, res) => { //INICIO
 const getMascotaMongoDB= async (req, res) => { //MASCOTAS DESDE MONGO DB
     try {
         const arrayMascotasDB = await Mascota.find();
-       // console.log(arrayMascotasDB);
         res.render("mascotas-MongoDB", {
           arrayMascotas: arrayMascotasDB
         })
@@ -70,7 +70,6 @@ const DeleteMascota= async (req, res) => { //ELIMINACION DE MASCOTAS
   
     try {
         const mascotaDB = await Mascota.findByIdAndDelete({ _id: id });
-        console.log(mascotaDB)
   
         if (!mascotaDB) {
             res.json({
@@ -113,7 +112,7 @@ const UpdateMascota= async (req, res) => { //ACTUALIZACION DE MASCOTAS
 // ====== PREMIOS ==========
 const createPremio= async (req, res) => { //CREACION DE PREMIO
     const body = req.body
-     console.log(body)
+   
      try {
        await Premio.create(body)
        res.json({
@@ -124,20 +123,16 @@ const createPremio= async (req, res) => { //CREACION DE PREMIO
    }
 }
 
-const getPremiosByMascota= async (req, res) => { //PREMIOS DE LAS MASCOTAS
+const getPremiosByMascota = async (req, res) => { //OBTENCION DE PREMIOS
     const id = req.params.id;
-    const premios=[]
     try {
-        const premiosDB = await Premio.find();
-        console.log()
-
-        premiosDB.forEach(element => {
-            console.log(element.id_mascota)
-            if(element.id_mascota ==id) premios.push(element)
-        });
-        res.json(premios)
-      } catch (e) { console.log(e) }
-}
+        const premios = await Premio.find({ id_mascota: id });
+        res.json(premios);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al obtener los premios");
+    }
+};
 
 
 module.exports = {

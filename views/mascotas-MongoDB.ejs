@@ -23,12 +23,12 @@
     <div class="col-md-4 mb-3 mb-md-0">
       <div class="card bg-primary text-white">
         <div class="card-body d-flex align-items-center">
-          <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mr-3 position-relative" style="width: 60px; height: 0px;">
+          <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mr-3 position-relative" style="width: 60px; height: 60px;">
             <i class="fas fa-paw fa-2x text-primary"></i>
-            <h2 class="mb-0 position-absolute" style="font-size: 22px; color: #234a58; font-weight: bold;"><%= arrayMascotas.length %></h2>
           </div>
           <div>
             <h5 class="card-title mb-0">Total de Mascotas</h5>
+            <h2 class="mb-0"><%= arrayMascotas.length %></h2>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
           <div class="input-group">
             <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre o descripción...">
             <div class="input-group-append">
-              <button class="btn btn-primary" type="button" style="width: 60px; height: 40px;">
+              <button class="btn btn-primary" type="button" style="width:50px;height:50px">
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -60,7 +60,6 @@
         <table class="table table-hover mb-0" id="tabla-mascotas">
           <thead class="bg-light">
             <tr>
-              <th scope="col" class="border-top-0">ID</th>
               <th scope="col" class="border-top-0">Nombre</th>
               <th scope="col" class="border-top-0">Descripción</th>
               <th scope="col" class="border-top-0 text-center">Acciones</th>
@@ -70,16 +69,21 @@
             <% if(arrayMascotas.length > 0) { %>
               <% arrayMascotas.forEach(mascota => { %>
                 <tr>
-                  <td><span class="badge badge-light"><%= mascota.id %></span></td>
                   <td><strong><%= mascota.nombre %></strong></td>
                   <td><%= mascota.descripcion %></td>
                   <td class="text-center">
                     <div class="btn-group" role="group">
-                      <a class="btn btn-outline-primary" href="/Mascotas/actualizar/<%= mascota.id %>" data-toggle="tooltip" title="Actualizar">
+                      <a class="btn btn-outline-primary" href="/Mascotas/actualizar/<%= mascota.id %>" data-toggle="tooltip" title="Actualizar" style="margin-right: 15px;">
                         <i class="fas fa-edit"></i> Editar
                       </a>
-                      <button class="btn btn-outline-danger btn-eliminar" data-id="<%= mascota.id %>" data-toggle="tooltip" title="Eliminar">
+                      <button class="btn btn-outline-danger btn-eliminar" data-id="<%= mascota.id %>" data-toggle="tooltip" title="Eliminar" style="margin-right: 15px;">
                         <i class="fas fa-trash-alt"></i> Eliminar
+                      </button>
+                      <button class="btn btn-outline-success btn-premio" data-id="<%= mascota.id %>" data-nombre="<%= mascota.nombre %>" data-toggle="tooltip" title="Agregar Premio" style="margin-right: 15px;">
+                        <i class="fas fa-trophy"></i> Premio
+                      </button>
+                      <button class="btn btn-outline-info btn-ver-premios" data-id="<%= mascota.id %>" data-nombre="<%= mascota.nombre %>" data-toggle="tooltip" title="Ver Premios">
+                        <i class="fas fa-medal"></i> Ver Premios
                       </button>
                     </div>
                   </td>
@@ -141,12 +145,119 @@
   </div>
 </div>
 
+<!-- Modal para agregar premio -->
+<div class="modal fade" id="premioModal" tabindex="-1" aria-labelledby="premioModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="premioModalLabel">Agregar Premio</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="formPremio">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="mascotaNombre" class="font-weight-bold" style="font-weight: bold;">Mascota:</label>
+            <input type="text" class="form-control-plaintext" id="mascotaNombre" readonly>
+            <input type="hidden" name="mascotaId" id="mascotaId">
+          </div>
+          <div class="form-group">
+            <label for="descripcionPremio" class="font-weight-bold" style="font-weight: bold;" >Descripción del Premio:</label>
+            <textarea class="form-control" name="descripcion" id="descripcionPremio" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="valorPremio" class="font-weight-bold" style="font-weight: bold;">Valor del Premio:</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input type="number" class="form-control" name="valor" id="valorPremio" min="0" step="0.5" required>
+            </div>
+          </div>
+          <input type="hidden" name="fecha" id="fechaPremio">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-save mr-2"></i>Guardar Premio
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para ver premios -->
+<div class="modal fade" id="verPremiosModal" tabindex="-1" aria-labelledby="verPremiosModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="verPremiosModalLabel">Premios de la Mascota</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center mr-3" style="width: 50px; height: 50px;">
+              <i class="fas fa-paw fa-lg"></i>
+            </div>
+            <h4 id="nombreMascotaPremios" class="mb-0"></h4>
+          </div>
+          <hr>
+        </div>
+        
+        <!-- Lista de premios -->
+        <div id="listaPremios" class="mb-3"></div>
+        
+        <!-- Template para premios -->
+        <template id="premioPlanilla">
+          <div class="premio-item mb-3">
+            <div class="card border-left-info shadow-sm">
+              <div class="card-body py-3">
+                <div class="row no-gutters align-items-center">
+                  <div class="col-auto mr-3">
+                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                      <i class="fas fa-trophy text-warning"></i>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="premio-descripcion font-weight-bold text-dark"></div>
+                    <div class="small text-muted d-flex justify-content-between mt-2">
+                      <span class="premio-fecha"><i class="far fa-calendar-alt mr-1"></i></span>
+                      <span class="premio-valor text-success"><i class="fas fa-dollar-sign mr-1"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%- include('../template/footer'); %>
 
 <script>
   // Inicializar tooltips
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
+    
+    // Asegurarse de que Bootstrap y jQuery estén correctamente cargados
+    if (typeof $ === 'undefined') {
+      console.error('jQuery no está cargado correctamente');
+    }
+    
+    if (typeof $.fn.modal === 'undefined') {
+      console.error('Bootstrap modal no está cargado correctamente');
+    }
   });
 
   // Filtro de búsqueda
@@ -178,7 +289,6 @@
         method: 'delete'
       });
       const respuesta = await data.json();
-      console.log(respuesta);
 
       $('#confirmDeleteModal').modal('hide');
 
@@ -198,6 +308,137 @@
     }
   });
 
+  // Manejo del modal de premios
+  const botonesPremio = document.querySelectorAll('.btn-premio');
+  
+  botonesPremio.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      const nombre = this.getAttribute('data-nombre');
+      
+      document.getElementById('mascotaId').value = id;
+      document.getElementById('mascotaNombre').value = nombre;
+      
+      // Establecer la fecha actual en formato ISO
+      const fechaActual = new Date().toISOString().split('T')[0];
+      document.getElementById('fechaPremio').value = fechaActual;
+      
+      $('#premioModal').modal('show');
+    });
+  });
+
+  // Manejar envío del formulario de premio
+  document.getElementById('formPremio').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevenir el envío normal del formulario
+    
+    // Obtener los datos del formulario
+    const id_mascota = document.getElementById('mascotaId').value;
+    const descripcion = document.getElementById('descripcionPremio').value;
+    const valor_premio = document.getElementById('valorPremio').value;
+    const fecha = document.getElementById('fechaPremio').value;
+    
+    try {
+      const response = await fetch('/create-premio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id_mascota,
+          descripcion,
+          valor_premio,
+          fecha
+        })
+      });
+      
+      const result = await response.json();
+    
+      $('#premioModal').modal('hide');   // Cerrar el modal
+      
+      if (result.success) {
+        showAlert('success', '¡Premio agregado correctamente!');       // Mostrar mensaje de éxito
+        document.getElementById('formPremio').reset();   // Opcional: Limpiar el formulario
+      
+      } else {
+        showAlert('danger', result.message || 'Error al guardar premio');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showAlert('danger', 'Error al procesar la solicitud');
+    }
+  });
+
+  // Manejo para ver premios
+  const botonesVerPremios = document.querySelectorAll('.btn-ver-premios');
+
+  botonesVerPremios.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      const nombre = this.getAttribute('data-nombre');
+
+      document.getElementById('nombreMascotaPremios').textContent = nombre;
+      cargarPremiosMascota(id);
+      $('#verPremiosModal').modal('show');
+    });
+  });
+
+
+  
+  // Función para cargar los premios de una mascota
+  async function cargarPremiosMascota(mascotaId) {
+    try {
+      // Mostrar el indicador de carga
+      document.getElementById('listaPremios').innerHTML = '<div class="text-center py-3"><div class="spinner-border text-info" role="status"><span class="sr-only">Cargando...</span></div></div>';
+      
+      // Realizar la petición para obtener los premios
+      const response = await fetch(`/premios/${mascotaId}`);
+      const premios = await response.json();
+      
+      const contenedorPremios = document.getElementById('listaPremios');
+      contenedorPremios.innerHTML = '';
+      
+      // Si no hay premios, mostrar mensaje
+ 
+      if (premios.length === 0) {
+        contenedorPremios.textContent = "No hay premios registrados";
+        return
+      }
+      
+      // Plantilla para cada premio
+      const template = document.getElementById('premioPlanilla');
+      
+      // Agregar cada premio a la lista
+      premios.forEach(premio => {
+        const premioClone = document.importNode(template.content, true);
+        
+        // Llenar datos del premio
+        premioClone.querySelector('.premio-descripcion').textContent = premio.descripcion;
+        premioClone.querySelector('.premio-fecha').innerHTML += formatearFecha(premio.fecha);
+        premioClone.querySelector('.premio-valor').innerHTML += formatearDinero(premio.valor_premio);
+        
+        contenedorPremios.appendChild(premioClone);
+      });
+      
+    } catch (error) {
+      document.getElementById('listaPremios').innerHTML = '<div class="alert alert-danger">Error al cargar los premios</div>';
+    }
+  }
+  
+  // Función para formatear la fecha
+  function formatearFecha(fechaStr) {
+    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(fechaStr).toLocaleDateString('es-ES', opciones);
+  }
+  
+  // Función para formatear valores monetarios
+  function formatearDinero(valor) {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(valor);
+  }
+
   // Función para mostrar alertas
   function showAlert(type, message) {
     const alertDiv = document.createElement('div');
@@ -216,4 +457,9 @@
       $(alertDiv).alert('close');
     }, 3000);
   }
+  
+  // Asegurarse de que los modales se pueden cerrar correctamente
+  $('.modal').on('click', '[data-dismiss="modal"]', function() {
+    $(this).closest('.modal').modal('hide');
+  });
 </script>
