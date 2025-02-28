@@ -1,41 +1,76 @@
 const Mascota = require('../models/mascota');
-const Premio = require('../models/premio');
 
-// ====== MASCOTA ==========
+const goHome= async (req, res) => { //INICIO
+    res.render("index", { titulo: "inicio EJS", texto: "NODE" });
+  };
+  
+  const goNosotros= async(req, res) => { //NOSOTROS
+    res.render("nosotros", { titulo: "Nosotros",texto:"NODE" });
+  };
+
+  const getMascotaLocal= async (req, res) => { //MASCOTAS DEFINIDOS LOCALMENTE
+    res.render("mascotas", {
+        arrayMascotas: [
+          { id: "mas-01", nombre: "Rex", descripcion: "Mascota Rex" },
+          { id: "mas-02", nombre: "P Aleman", descripcion: "Mascota Aleman" },
+          { id: "mas-03", nombre: "Buldocer", descripcion: "Mascota Buldocer" }
+        ]
+      })
+}
+  
+// Definiciones para datos en MONGODB
+
 const getMascotaMongoDB= async (req, res) => { //MASCOTAS DESDE MONGO DB
     try {
         const arrayMascotasDB = await Mascota.find();
-        res.json(arrayMascotasDB)
+       // console.log(arrayMascotasDB);
+        res.render("mascotas-MongoDB", {
+          arrayMascotas: arrayMascotasDB
+        })
       } catch (e) { console.log(e) }
 }
 
 const MascotaCreate= async (req, res) => { //CREACION DE MASCOTAS
     const body = req.body
+    // console.log(body)
      try {
        await Mascota.create(body)
-       res.json({
-        message:"Mascota creada correctamente"
-       })
+       res.redirect('/mascotas-MongoDB')
    } catch (error) {
        console.log('error', error)
    }
 }
+const goCreateMascota= async(req, res) => { //REDIRECCIONA A CREAR MASCOTA
+    res.render("crear");
+  };
+  
+  const goUpdateMascota= async (req, res) => { //REDIRECCIONA A ACTUALIZAR MASCOTA
+    res.render("actualizar");
+  };
 
-const findMascotaById= async (req, res) => { //MUETRAS MASCOTAS EN INPUTS PARA ACTUALIZAR
+const UpdateShowMascota= async (req, res) => { //MUETRAS MASCOTAS EN INPUTS PARA ACTUALIZAR
     const id = req.params.id
     try {
         const mascotaDB = await Mascota.findOne({ _id: id })
-        res.json(mascotaDB)
+      // console.log(mascotaDB)
+        res.render('actualizar', {
+            mascota: mascotaDB,
+            error: false
+        })
     } catch (error) {
         console.log(error)
+        res.render('actualizar', {
+            error: true,
+            mensaje: 'No se encuentra el documento...'
+        })
     }
 }
-
 const DeleteMascota= async (req, res) => { //ELIMINACION DE MASCOTAS
     const id = req.params.id;
   
     try {
         const mascotaDB = await Mascota.findByIdAndDelete({ _id: id });
+        console.log(mascotaDB)
   
         if (!mascotaDB) {
             res.json({
@@ -45,7 +80,7 @@ const DeleteMascota= async (req, res) => { //ELIMINACION DE MASCOTAS
         } else {
             res.json({
                 estado: true,
-                mensaje: 'Mascota eliminado correctamente'
+                mensaje: 'Eliminado!'
             })
         }
         
@@ -61,15 +96,19 @@ const UpdateMascota= async (req, res) => { //ACTUALIZACION DE MASCOTAS
   
     try {
         const mascotaDB = await Mascota.findByIdAndUpdate(id, body, { useFindAndModify: false })
+       // console.log(mascotaDB)
         res.json({
             estado: true,
-            mensaje: 'Mascota actualizada correctamente'
+            mensaje: 'Mascota actualizada'
         })
     } catch (error) {
         console.log(error)
+        res.json({
+            estado: false,
+            mensaje: 'Fallo en la actualizacion'
+        })
     }
 }
-
 
 // ====== PREMIOS ==========
 const createPremio= async (req, res) => { //CREACION DE PREMIO
@@ -101,14 +140,17 @@ const getPremiosByMascota= async (req, res) => { //PREMIOS DE LAS MASCOTAS
 }
 
 
-
-
 module.exports = {
+    getMascotaLocal,
     getMascotaMongoDB,
-    findMascotaById,
     MascotaCreate,
+    UpdateShowMascota,
     DeleteMascota,
     UpdateMascota,
+    goHome,
+    goNosotros,
+    goCreateMascota,
+    goUpdateMascota,
     createPremio,
     getPremiosByMascota
 }

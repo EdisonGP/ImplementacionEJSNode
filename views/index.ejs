@@ -1,0 +1,127 @@
+<%- include('../template/cabecera', {titulo: 'Mi Portal de Mascotas'}); %>
+
+<!-- Hero Section -->
+<div class="jumbotron jumbotron-fluid bg-primary text-white mb-0" style="min-height: 250px; display: flex; align-items: center;"> 
+    <div class="container text-center">
+      <h1 class="display-4">Bienvenidos a Mi Portal de Mascotas</h1>
+      <p class="lead">Tu lugar para encontrar, registrar y cuidar de tus amigos peludos</p>
+      <a href="/mascotas" class="btn btn-light btn-lg mt-3">Ver mascotas</a>
+      <a href="/mascotas/crear" class="btn btn-outline-light btn-lg mt-3 ml-2">Registrar mascota</a>
+    </div>
+  </div>
+  
+
+<!-- Features Section -->
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fas fa-search fa-3x text-primary mb-3"></i>
+          <h3 class="card-title">Buscar</h3>
+          <p class="card-text">Encuentra la mascota perfecta para ti y tu familia.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fas fa-paw fa-3x text-primary mb-3"></i>
+          <h3 class="card-title">Registrar</h3>
+          <p class="card-text">Agrega la información de tu mascota en Mongo DB.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fas fa-heart fa-3x text-primary mb-3"></i>
+          <h3 class="card-title">Cuidar</h3>
+          <p class="card-text">Aprende a cuidar adecuadamente de tu mascota.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery Section -->
+<div class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Amigos peludos</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="data:image/jpeg;base64,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" alt="Golden Retriever" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Max</h5>
+            <p class="card-text">Golden Retriever juguetón de 2 años. Le encanta correr y jugar a buscar la pelota.</p>
+            <a href="#" class="btn btn-sm btn-primary">Ver más</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cGVycm98ZW58MHx8MHx8fDA%3D" alt="Gato Siamés" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Luna</h5>
+            <p class="card-text">Gata siamesa de 3 años. Tranquila y cariñosa, perfecta para espacios pequeños.</p>
+            <a href="#" class="btn btn-sm btn-primary">Ver más</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="https://estaticos-cdn.prensaiberica.es/clip/96868e1a-7b8e-46f7-b1ae-829bcb19795e_alta-libre-aspect-ratio_default_0.jpg" alt="Labrador" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Rocky</h5>
+            <p class="card-text">Labrador de 1 año. Energético y amigable, ideal para familias con niños.</p>
+            <a href="#" class="btn btn-sm btn-primary">Ver más</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="/mascotas-MongoDB" class="btn btn-primary">Ver todas las mascotas</a>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="container py-5">
+  <h2 class="text-center mb-4">Lo que dicen nuestros usuarios</h2>
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100">
+        <div class="card-body">
+          <p class="card-text">"Gracias a este portal encontré a mi compañero perfecto. El proceso fue muy fácil y ahora tengo un amigo para toda la vida."</p>
+          <p class="font-weight-bold mb-0">- Carlos Rodríguez</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100">
+        <div class="card-body">
+          <p class="card-text">"La información disponible sobre cuidados me ha ayudado mucho a entender las necesidades de mi nueva mascota. Totalmente recomendado."</p>
+          <p class="font-weight-bold mb-0">- María López</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="bg-primary text-white py-5">
+  <div class="container text-center">
+    <h2>¿Listo para encontrar tu compañero perfecto?</h2>
+    <p class="lead">Explora nuestra base de datos de mascotas o registra la tuya</p>
+    <div class="mt-4">
+      <a href="/mascotas-MongoDB" class="btn btn-light btn-lg mr-2">Explorar mascotas</a>
+      <a href="#" class="btn btn-outline-light btn-lg">Contactarnos</a>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS y FontAwesome (agregar al final de tu template) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+<%- include('../template/footer'); %>

@@ -1,0 +1,219 @@
+<%- include('../template/cabecera', {titulo: 'Mascotas - MongoDB' }); %>
+
+<!-- Encabezado de sección -->
+<div class="bg-primary text-white py-4 mb-4">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h1 class="mb-0">Gestión de Mascotas</h1>
+        <p class="lead mb-0">Base de datos MongoDB</p>
+      </div>
+      <div class="col-md-6 text-md-right mt-3 mt-md-0">
+        <a class="btn btn-light" href="/Mascotas/crear">
+          <i class="fas fa-plus-circle mr-2"></i>Crear Nueva Mascota
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Tarjeta de estadísticas -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="card bg-primary text-white">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mr-3 position-relative" style="width: 60px; height: 0px;">
+            <i class="fas fa-paw fa-2x text-primary"></i>
+            <h2 class="mb-0 position-absolute" style="font-size: 22px; color: #234a58; font-weight: bold;"><%= arrayMascotas.length %></h2>
+          </div>
+          <div>
+            <h5 class="card-title mb-0">Total de Mascotas</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Búsqueda Rápida</h5>
+          <div class="input-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre o descripción...">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" style="width: 60px; height: 40px;">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de mascotas -->
+  <div class="card shadow-sm mb-5">
+    <div class="card-header bg-white">
+      <h5 class="mb-0">Listado de Mascotas</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0" id="tabla-mascotas">
+          <thead class="bg-light">
+            <tr>
+              <th scope="col" class="border-top-0">ID</th>
+              <th scope="col" class="border-top-0">Nombre</th>
+              <th scope="col" class="border-top-0">Descripción</th>
+              <th scope="col" class="border-top-0 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(arrayMascotas.length > 0) { %>
+              <% arrayMascotas.forEach(mascota => { %>
+                <tr>
+                  <td><span class="badge badge-light"><%= mascota.id %></span></td>
+                  <td><strong><%= mascota.nombre %></strong></td>
+                  <td><%= mascota.descripcion %></td>
+                  <td class="text-center">
+                    <div class="btn-group" role="group">
+                      <a class="btn btn-outline-primary" href="/Mascotas/actualizar/<%= mascota.id %>" data-toggle="tooltip" title="Actualizar">
+                        <i class="fas fa-edit"></i> Editar
+                      </a>
+                      <button class="btn btn-outline-danger btn-eliminar" data-id="<%= mascota.id %>" data-toggle="tooltip" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="4" class="text-center py-4">
+                  <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-2"></i> No hay mascotas registradas actualmente
+                  </div>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+      <small class="text-muted">Mostrando <%= arrayMascotas.length %> mascotas</small>
+      <% if(arrayMascotas.length > 0) { %>
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.</p>
+        <input type="hidden" id="idMascotaEliminar">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../template/footer'); %>
+
+<script>
+  // Inicializar tooltips
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  // Filtro de búsqueda
+  $(document).ready(function(){
+    $("#searchInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#tabla-mascotas tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+
+  // Manejo de eliminación con modal de confirmación
+  const botonesEliminar = document.querySelectorAll('.btn-eliminar');
+  
+  botonesEliminar.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      document.getElementById('idMascotaEliminar').value = id;
+      $('#confirmDeleteModal').modal('show');
+    });
+  });
+
+  document.getElementById('btnConfirmarEliminar').addEventListener('click', async () => {
+    const id = document.getElementById('idMascotaEliminar').value;
+
+    try {
+      const data = await fetch(`/Mascotas/eliminar/${id}`, {
+        method: 'delete'
+      });
+      const respuesta = await data.json();
+      console.log(respuesta);
+
+      $('#confirmDeleteModal').modal('hide');
+
+      if (respuesta.estado) {
+        // Notificación de éxito usando Bootstrap toast o alert
+        showAlert('success', respuesta.mensaje);
+        // Recargar la página después de un breve retraso
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        showAlert('danger', respuesta.mensaje);
+      }
+    } catch (error) {
+      console.log(error);
+      showAlert('danger', 'Error al procesar la solicitud');
+    }
+  });
+
+  // Función para mostrar alertas
+  function showAlert(type, message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show fixed-top w-50 mx-auto mt-3`;
+    alertDiv.setAttribute('role', 'alert');
+    alertDiv.innerHTML = `
+      ${message}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    // Auto cerrar después de 3 segundos
+    setTimeout(() => {
+      $(alertDiv).alert('close');
+    }, 3000);
+  }
+</script>

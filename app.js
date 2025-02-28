@@ -22,6 +22,9 @@ mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true
 .then(()=>console.log('Base de datos conectada'))
 .catch(e=>console.log(e))
 
+// Motor de plantilla EJS
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
 
 //Rutas web
 app.use('/', require('./Router/rutas'));
@@ -29,5 +32,3 @@ app.use('/', require('./Router/rutas'));
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-app.get('/',(req,res)=>{res.send('Bienvenidos al Api Rest Mascotas')})
-

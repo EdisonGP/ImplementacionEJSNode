@@ -1,21 +1,31 @@
-
 const express = require('express');
 const router = express.Router();
 
 const {
+    getMascotaLocal,
     getMascotaMongoDB,
     MascotaCreate,
-    findMascotaById,
+    UpdateShowMascota,
     DeleteMascota,
     UpdateMascota,
-    createPremio,getPremiosByMascota
+    goHome,
+    goNosotros,
+    goCreateMascota,
+    goUpdateMascota,
+    createPremio,
+    getPremiosByMascota
 } = require("../controller/controllerMascotas")
 
-router.get("/mascotas", getMascotaMongoDB);
-router.post("/mascota", MascotaCreate);
-router.get('/mascota/:id', findMascotaById);
-router.delete("/mascota/:id", DeleteMascota);
-router.put("/actualizar-mascota/:id", UpdateMascota);
+router.get("/", goHome);
+router.get("/nosotros", goNosotros);
+router.get("/Mascotas/crear", goCreateMascota);
+router.get("/Mascotas/actualizar", goUpdateMascota);
+router.get("/mascotas",getMascotaLocal );
+router.get("/mascotas-MongoDB", getMascotaMongoDB);
+router.post("/create-mascota", MascotaCreate);
+router.get('/Mascotas/actualizar/:id', UpdateShowMascota);
+router.delete("/Mascotas/eliminar/:id", DeleteMascota);
+router.put("/Mascotas/actualizar/:id", UpdateMascota);
 router.post("/premio", createPremio);
 router.get('/premios/:id', getPremiosByMascota);
 
