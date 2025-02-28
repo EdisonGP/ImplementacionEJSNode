@@ -1,0 +1,62 @@
+<%- include('../template/cabecera', {titulo: 'Actualizar' }); %>
+    <div class="container">
+        <% if(error) {%>
+            <p>
+                <%=mensaje%>
+            </p>
+            <a href="/mascotas-MongoDB" class="btn btn-danger btn-block w-100">Volver a mascotas</a>
+            <%}else{%>
+
+                <div class="container">
+                    <h2 class="text-center">ACTUALIZAR MASCOTA</h2>
+
+                    <form class="m-5 b-0" id="FormActualizar">
+                        <input type="hidden" name="id" value="<%=mascota.id%>">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" name="nombre" value="<%=mascota.nombre%>">
+                        </div>
+                        <div class="form-group mt-3 mb-3">
+                            <label>Descripción</label>
+                            <input type="text" class="form-control" name="descripcion" value="<%=mascota.descripcion%>">
+                       
+                        </div>
+                        <button type="submit" class="d-block bg-primary text-white w-100" >Actualizar Mascota</button>
+                    </form>
+                </div>
+
+                <%}%>
+
+    </div>
+    <%- include('../template/footer'); %>
+        <script>
+            const formEditar = document.querySelector('#FormActualizar');
+
+            formEditar.addEventListener('submit', async (e) => {
+                e.preventDefault()
+
+                const id = formEditar.elements['id'].value;  
+                const nombre = formEditar.elements['nombre'].value;  
+                const descripcion = formEditar.elements['descripcion'].value;  
+          
+            
+
+               const data = await fetch(`/Mascotas/actualizar/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: JSON.stringify({ nombre, descripcion })
+                })
+
+                const res = await data.json()
+
+                if (res.estado) {
+                    window.location.href = '/mascotas-MongoDB'
+                } else {
+                    alert(res)
+                }
+
+            })
+        </script>
